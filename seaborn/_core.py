@@ -1173,7 +1173,12 @@ class VectorPlotter:
             ax.set_xlabel(self.variables.get("x", default_x), visible=x_visible)
         if not ax.get_ylabel():
             y_visible = any(t.get_visible() for t in ax.get_yticklabels())
-            ax.set_ylabel(self.variables.get("y", default_y), visible=y_visible)
+            axis_label = self.variables.get("y", default_y)
+            if hasattr(self, 'estimator') and self.estimator:
+                estimator_name = self.estimator if isinstance(self.estimator, str) else self.estimator.__name__
+                estimator_name = estimator_name if estimator_name != '<lambda>' else 'AGG'
+                axis_label = f"{estimator_name}( {axis_label} )"
+            ax.set_ylabel(axis_label, visible=y_visible)
 
 
 def variable_type(vector, boolean_type="numeric"):

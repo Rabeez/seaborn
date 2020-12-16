@@ -355,7 +355,13 @@ class _CategoricalPlotter(object):
         if xlabel is not None:
             ax.set_xlabel(xlabel)
         if ylabel is not None:
-            ax.set_ylabel(ylabel)
+            axis_label = ylabel
+            if hasattr(self, 'estimator') and self.estimator:
+                estimator_name = self.estimator if isinstance(self.estimator, str) else self.estimator.__name__
+                estimator_name = estimator_name if estimator_name != '<lambda>' else 'AGG'
+                axis_label = f"{estimator_name}( {axis_label} )"
+            
+            ax.set_ylabel(axis_label)
 
         group_names = self.group_names
         if not group_names:
@@ -1587,6 +1593,7 @@ class _BarPlotter(_CategoricalStatPlotter):
         self.estimate_statistic(estimator, ci, n_boot, seed)
 
         self.dodge = dodge
+        self.estimator = estimator
 
         self.errcolor = errcolor
         self.errwidth = errwidth

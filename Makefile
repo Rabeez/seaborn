@@ -1,4 +1,3 @@
-export SHELL := /bin/bash
 
 test:
 	pytest -n auto --doctest-modules --cov=seaborn --cov-config=.coveragerc seaborn
